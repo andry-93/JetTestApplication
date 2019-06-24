@@ -2,10 +2,6 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView {
 	config() {
-		let header = {
-			type: "header", template: this.app.config.name, css: "webix_header app_header"
-		};
-
 		let menu = {
 			view: "menu",
 			id: "top:menu",
@@ -13,10 +9,11 @@ export default class TopView extends JetView {
 			width: 180,
 			layout: "y",
 			select: true,
-			template: "<span class='webix_icon #icon#'></span> #value# ",
+			template: "<span class='fas #icon#'></span> #value# ",
 			data: [
-				{value: "Dashboard", id: "start", icon: "wxi-columns"},
-				{value: "Data", id: "data", icon: "wxi-pencil"}
+				{value: "Contacts", id: "contacts", icon: "fa-users"},
+				{value: "Activities", id: "activities", icon: "fa-calendar-alt"},
+				{value: "Settings", id: "settings", icon: "fa-cogs"}
 			]
 		};
 
@@ -28,7 +25,7 @@ export default class TopView extends JetView {
 				{
 					paddingX: 5,
 					paddingY: 10,
-					rows: [{css: "webix_shadow_medium", rows: [header, menu]}]
+					rows: [{css: "webix_shadow_medium", rows: [menu]}]
 				},
 				{
 					type: "wide",
