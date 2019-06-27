@@ -11,7 +11,7 @@ export default class SaveForm extends JetView {
 			width: 500,
 			head: {
 				cols: [
-					{template: "Title", type: "header", borderless: true},
+					{template: "Add (*edit) activity", type: "header", borderless: true},
 					{view: "icon",
 						icon: "wxi-close",
 						tooltip: "Close window",

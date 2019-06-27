@@ -29,9 +29,9 @@ export default class Activities extends JetView {
 			css: "activities-table",
 			localId: "activitiesTable",
 			columns: [
-				{id: "check", header: "", width: 40, template: "{common.checkbox()}"},
+				{id: "State", header: "", width: 40, checkValue: "Close", uncheckValue: "Open", template: "{common.checkbox()}"},
 				{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], width: 150, collection: activitytypes, sort: "string"},
-				{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], width: 150, sort: "date", format: webix.i18n.dateFormatStr},
+				{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], width: 150, sort: "date"},
 				{id: "Details", minWidth: 250, fillspace: true, sort: "string", header: ["Details", {content: "textFilter"}]},
 				{id: "ContactID", header: ["Contacts", {content: "richSelectFilter"}], minWidth: 250, fillspace: true, collection: contacts, sort: "string"},
 				{header: "", width: 40, template: "{common.editIcon()}"},
