@@ -1,4 +1,7 @@
 import {JetView} from "webix-jet";
+import {contacts} from "../../models/contacts";
+import {activitytypes} from "../../models/activitytypes";
+import {activities} from "../../models/activities";
 
 export default class SaveForm extends JetView {
 	config() {
@@ -20,30 +23,49 @@ export default class SaveForm extends JetView {
 				]
 			},
 			body: {
+				view: "form",
 				padding: 10,
-				rows: [
+				localId: "editForm",
+				elements: [
 					{
 						view: "textarea",
 						label: "Details",
+						name: "Details",
 						height: 150
 					},
 					{
-						view: "combo",
-						label: "Type"
+						view: "richselect",
+						label: "Type",
+						name: "TypeID",
+						options: {
+							body: {
+								template: "#value#",
+								data: activitytypes
+							}
+						}
 					},
 					{
-						view: "combo",
-						label: "Contact"
+						view: "richselect",
+						label: "Contact",
+						name: "ContactID",
+						options: {
+							body: {
+								template: "#value#",
+								data: contacts
+							}
+						}
 					},
 					{
 						margin: 10,
 						cols: [
 							{
 								view: "datepicker",
+								name: "DueDate",
 								label: "Date"
 							},
 							{
 								view: "datepicker",
+								name: "DueTime",
 								type: "time",
 								label: "Time"
 							}
@@ -51,7 +73,10 @@ export default class SaveForm extends JetView {
 					},
 					{
 						view: "checkbox",
+						name: "State",
 						labelRight: "Completed",
+						checkValue: "Close",
+						uncheckValue: "Open",
 						labelWidth: 0
 					},
 					{
@@ -59,6 +84,7 @@ export default class SaveForm extends JetView {
 							{},
 							{
 								view: "button",
+								localId: "onSave",
 								label: "Add (*save)",
 								autoWidth: true
 							},
@@ -70,16 +96,65 @@ export default class SaveForm extends JetView {
 							}
 						]
 					}
-				]
+				],
+				rules: {
+					DueDate: webix.rules.isNotEmpty,
+					DueTime: webix.rules.isNotEmpty
+				}
 			}
 		};
 	}
 
-	showWindow() {
+	init() {
+		webix.promise.all([
+			contacts.waitData,
+			activitytypes.waitData,
+			activities.waitData
+		]).then(() => {
+			// this.$$("onSave").attachEvent("onItemClick", function onSave() {
+			// 	const formView = this.getFormView();
+			// 	if (formView.validate()) {
+			// 		activities.add(formView.getValues());
+			// 		this.$scope.closeWindow();
+			// 	}
+			// });
+		});
+	}
+
+	showWindow(id) {
 		this.getRoot().show();
+		webix.promise.all([
+			contacts.waitData,
+			activitytypes.waitData,
+			activities.waitData
+		]).then(() => {
+			const formView = this.$$("editForm");
+			if (id) {
+				formView.setValues(activities.getItem(id));
+				this.$$("onSave").attachEvent("onItemClick", () => {
+					if (formView.validate()) {
+						activities.updateItem(id, formView.getValues());
+						this.closeWindow();
+					}
+				});
+			}
+			else {
+				this.$$("onSave").attachEvent("onItemClick", () => {
+					if (formView.validate()) {
+						activities.add(formView.getValues());
+						this.closeWindow();
+					}
+				});
+			}
+		});
 	}
 
 	closeWindow() {
 		this.getRoot().close();
+	}
+
+	onEdit(id) {
+		this.$$("editForm").setValues(activities.getItem(id));
+		// activities.updateItem(id, this.$$("editForm").getValues());
 	}
 }

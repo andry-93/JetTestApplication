@@ -1,4 +1,6 @@
-const dateFormat = webix.Date.strToDate("%d-%m-%Y %h:%i");
+const dateFormat = webix.Date.strToDate("%d-%m-%Y %H:%i");
+const saveFormatDate = webix.Date.dateToStr("%Y-%m-%d");
+const saveFormatTime = webix.Date.dateToStr("%H:%i");
 
 export const activities = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/activities/",
@@ -6,9 +8,14 @@ export const activities = new webix.DataCollection({
 	scheme: {
 		$init: (obj) => {
 			obj.DueDate = dateFormat(obj.DueDate);
+			obj.DueTime = obj.DueDate;
+		},
+		$update: (obj) => {
+			obj.DueDate = `${saveFormatDate(obj.DueDate)} ${saveFormatTime(obj.DueTime)}`;
+			obj.DueDate = new Date(obj.DueDate);
 		},
 		$save: (obj) => {
-			obj.DueDate = webix.i18n.parseFormatStr(obj.DueDate);
+			obj.DueDate = `${saveFormatDate(obj.DueDate)} ${saveFormatTime(obj.DueTime)}`;
 		}
 	}
 });

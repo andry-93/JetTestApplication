@@ -31,14 +31,15 @@ export default class Activities extends JetView {
 			columns: [
 				{id: "State", header: "", width: 40, checkValue: "Close", uncheckValue: "Open", template: "{common.checkbox()}"},
 				{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], width: 150, collection: activitytypes, sort: "string"},
-				{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], width: 150, sort: "date"},
+				{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], width: 300, sort: "date"},
 				{id: "Details", minWidth: 250, fillspace: true, sort: "string", header: ["Details", {content: "textFilter"}]},
 				{id: "ContactID", header: ["Contacts", {content: "richSelectFilter"}], minWidth: 250, fillspace: true, collection: contacts, sort: "string"},
 				{header: "", width: 40, template: "{common.editIcon()}"},
 				{header: "", width: 40, template: "{common.trashIcon()}"}
 			],
 			onClick: {
-				"wxi-trash": this.deleteColumn
+				"wxi-trash": this.deleteColumn,
+				"wxi-pencil": this.editColumn
 			}
 		};
 
@@ -59,6 +60,12 @@ export default class Activities extends JetView {
 		]).then(() => {
 			this.$$("activitiesTable").sync(activities);
 		});
+	}
+
+	editColumn(_e, id) {
+		let window = this.$scope.ui(SaveForm);
+		window.showWindow(id);
+		return false;
 	}
 
 	deleteColumn(_e, id) {

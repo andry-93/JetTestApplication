@@ -1,4 +1,5 @@
-const dateFormat = webix.Date.strToDate("%d-%m-%Y %h:%i");
+const dateFormat = webix.Date.strToDate("%d-%m-%Y");
+const saveFormat = webix.Date.dateToStr("%Y-%m-%d");
 
 export const contacts = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/contacts/",
@@ -10,8 +11,8 @@ export const contacts = new webix.DataCollection({
 			obj.StartDate = dateFormat(obj.StartDate);
 		},
 		$save: (obj) => {
-			obj.Birthday = webix.i18n.parseFormatStr(obj.Birthday);
-			obj.StartDate = webix.i18n.parseFormatStr(obj.StartDate);
+			obj.Birthday = saveFormat(obj.Birthday);
+			obj.StartDate = saveFormat(obj.StartDate);
 		}
 	}
 });
