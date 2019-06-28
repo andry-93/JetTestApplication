@@ -7,11 +7,21 @@ export default class Start extends JetView {
 		let Toolbar = {
 			view: "toolbar",
 			paddingX: 10,
+			borderless: true,
 			elements: [
 				{
-					view: "label",
-					label: "Name Surname",
-					localId: "fullName"
+					rows: [
+						{},
+						{
+							template: this.selectedName,
+							type: "clean",
+							autoheight: true,
+							borderless: true,
+							css: "contact-info",
+							localId: "templateName"
+						},
+						{}
+					]
 				},
 				{
 					view: "button",
@@ -26,14 +36,15 @@ export default class Start extends JetView {
 					autowidth: true,
 					type: "icon",
 					icon: "far fa-edit",
-					disabled: true,
-					label: "Edit"
+					label: "Edit",
+					click() {
+						this.$scope.show("contacts.edit");
+					}
 				}
 			]
 		};
 
 		let Info = {
-			type: "form",
 			cols: [
 				{
 					maxWidth: 200,
@@ -56,11 +67,17 @@ export default class Start extends JetView {
 		};
 
 		return {
+			type: "form",
+			localId: "container",
 			rows: [
-				Toolbar,
 				{
-					cols: [
-						Info
+					rows: [
+						Toolbar,
+						{
+							cols: [
+								Info
+							]
+						}
 					]
 				},
 				{}
@@ -69,14 +86,14 @@ export default class Start extends JetView {
 	}
 
 	urlChange() {
+		let id = this.getParentView().getParam("id");
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData
 		]).then(() => {
-			let id = this.getParam("id");
 			if (id && contacts.exists(id)) {
 				let contactItem = contacts.getItem(id);
-				this.setLabel(this.$$("fullName"), `${contactItem.FirstName} ${contactItem.LastName}`);
+				this.$$("templateName").setValues({value: contactItem.value});
 				this.$$("templateImg").setValues({Photo: contactItem.Photo, Status: statuses.getItem(contactItem.StatusID).Value});
 				this.$$("templateInfo").setValues(contactItem);
 			}
@@ -85,7 +102,7 @@ export default class Start extends JetView {
 
 	selectedContactImg(obj) {
 		let photo = obj.Photo || "https://www.achievesuccesstutoring.com/wp-content/uploads/2019/05/no-photo-icon-22.jpg.png";
-		let status = obj.Status || " ";
+		let status = obj.Status || "";
 		return `
 			<img src="${photo}" class="contact-info_photo" ondragstart="return false"/>
 			<div class="text-center">${status}</div>
@@ -95,20 +112,19 @@ export default class Start extends JetView {
 	selectedContact(obj) {
 		return `
 			<div>
-				<i class="fas fa-envelope"></i> <span>${obj.Email}</span><br>
-				<i class="fab fa-skype"></i> <span>${obj.Skype}</span><br>
-				<i class="fas fa-tag"></i> <span>${obj.Job}</span><br>
-				<i class="fas fa-briefcase"></i> <span>${obj.Company}</span><br>
+				<i class="fas fa-envelope"></i> <span>${obj.Email || ""}</span><br>
+				<i class="fab fa-skype"></i> <span>${obj.Skype || ""}</span><br>
+				<i class="fas fa-tag"></i> <span>${obj.Job || ""}</span><br>
+				<i class="fas fa-briefcase"></i> <span>${obj.Company || ""}</span><br>
 			</div>
 			<div>
-				<i class="far fa-calendar-alt"></i> <span>${obj.Birthday}</span><br>
-				<i class="fas fa-map-marker-alt"></i> <span>${obj.Address}</span>
+				<i class="far fa-calendar-alt"></i> <span>${obj.Birthday || ""}</span><br>
+				<i class="fas fa-map-marker-alt"></i> <span>${obj.Address || ""}</span>
 			</div>
 		`;
 	}
 
-	setLabel(obj, value) {
-		obj.define("label", value);
-		obj.refresh();
+	selectedName(obj) {
+		return `<span>${obj.value || ""}</span>`;
 	}
 }

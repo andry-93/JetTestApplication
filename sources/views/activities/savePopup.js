@@ -105,22 +105,6 @@ export default class SaveForm extends JetView {
 		};
 	}
 
-	init() {
-		webix.promise.all([
-			contacts.waitData,
-			activitytypes.waitData,
-			activities.waitData
-		]).then(() => {
-			// this.$$("onSave").attachEvent("onItemClick", function onSave() {
-			// 	const formView = this.getFormView();
-			// 	if (formView.validate()) {
-			// 		activities.add(formView.getValues());
-			// 		this.$scope.closeWindow();
-			// 	}
-			// });
-		});
-	}
-
 	showWindow(id) {
 		this.getRoot().show();
 		webix.promise.all([
