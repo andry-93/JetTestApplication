@@ -14,7 +14,7 @@ export default class SaveForm extends JetView {
 			width: 500,
 			head: {
 				cols: [
-					{template: "Add (*edit) activity", type: "header", borderless: true},
+					{template: "Add (*edit) activity", type: "header", borderless: true, localId: "headerWindow"},
 					{view: "icon",
 						icon: "wxi-close",
 						tooltip: "Close window",
@@ -95,22 +95,6 @@ export default class SaveForm extends JetView {
 		};
 	}
 
-	init() {
-		webix.promise.all([
-			contacts.waitData,
-			activitytypes.waitData,
-			activities.waitData
-		]).then(() => {
-			// this.$$("onSave").attachEvent("onItemClick", function onSave() {
-			// 	const formView = this.getFormView();
-			// 	if (formView.validate()) {
-			// 		activities.add(formView.getValues());
-			// 		this.$scope.closeWindow();
-			// 	}
-			// });
-		});
-	}
-
 	showWindow(id) {
 		this.getRoot().show();
 		webix.promise.all([
@@ -119,32 +103,25 @@ export default class SaveForm extends JetView {
 			activities.waitData
 		]).then(() => {
 			const formView = this.$$("editForm");
-			if (id) {
-				formView.setValues(activities.getItem(id));
-				this.$$("onSave").attachEvent("onItemClick", () => {
-					if (formView.validate()) {
-						activities.updateItem(id, formView.getValues());
-						this.closeWindow();
-					}
-				});
-			}
-			else {
-				this.$$("onSave").attachEvent("onItemClick", () => {
-					if (formView.validate()) {
-						activities.add(formView.getValues());
-						this.closeWindow();
-					}
-				});
-			}
+			const button = this.$$("onSave");
+			let mode = id ? "Edit" : "Add";
+			button.setValue(mode);
+			this.$$("headerWindow").setHTML(`${mode} activity`);
+			if (id) formView.setValues(activities.getItem(id));
+			button.attachEvent("onItemClick", () => {
+				if (formView.validate()) {
+					if (id) { activities.updateItem(id, formView.getValues()); }
+					else { activities.add(formView.getValues()); }
+					this.closeWindow();
+				}
+			});
 		});
 	}
 
 	closeWindow() {
-		this.getRoot().close();
-	}
-
-	onEdit(id) {
-		this.$$("editForm").setValues(activities.getItem(id));
-		// activities.updateItem(id, this.$$("editForm").getValues());
+		const formView = this.$$("editForm");
+		formView.clear();
+		formView.clearValidation();
+		this.getRoot().hide();
 	}
 }

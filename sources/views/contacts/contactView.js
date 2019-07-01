@@ -95,14 +95,14 @@ export default class Start extends JetView {
 	selectedContact(obj) {
 		return `
 			<div>
-				<i class="fas fa-envelope"></i> <span>${obj.Email}</span><br>
-				<i class="fab fa-skype"></i> <span>${obj.Skype}</span><br>
-				<i class="fas fa-tag"></i> <span>${obj.Job}</span><br>
-				<i class="fas fa-briefcase"></i> <span>${obj.Company}</span><br>
+				<i class="fas fa-envelope"></i> <span>${obj.Email || ""}</span><br>
+				<i class="fab fa-skype"></i> <span>${obj.Skype || ""}</span><br>
+				<i class="fas fa-tag"></i> <span>${obj.Job || ""}</span><br>
+				<i class="fas fa-briefcase"></i> <span>${obj.Company || ""}</span><br>
 			</div>
 			<div>
-				<i class="far fa-calendar-alt"></i> <span>${obj.Birthday}</span><br>
-				<i class="fas fa-map-marker-alt"></i> <span>${obj.Address}</span>
+				<i class="far fa-calendar-alt"></i> <span>${webix.i18n.dateFormatStr(obj.Birthday) || ""}</span><br>
+				<i class="fas fa-map-marker-alt"></i> <span>${obj.Address || ""}</span>
 			</div>
 		`;
 	}
