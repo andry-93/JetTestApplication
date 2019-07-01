@@ -37,23 +37,13 @@ export default class SaveForm extends JetView {
 						view: "richselect",
 						label: "Type",
 						name: "TypeID",
-						options: {
-							body: {
-								template: "#value#",
-								data: activitytypes
-							}
-						}
+						options: activitytypes
 					},
 					{
 						view: "richselect",
 						label: "Contact",
 						name: "ContactID",
-						options: {
-							body: {
-								template: "#value#",
-								data: contacts
-							}
-						}
+						options: contacts
 					},
 					{
 						margin: 10,
