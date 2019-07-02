@@ -16,6 +16,7 @@ export const activities = new webix.DataCollection({
 			obj.DueDate = new Date(obj.DueDate);
 		},
 		$save: (obj) => {
+			delete obj.DueTime;
 			obj.DueDate = saveFormatDateTime(obj.DueDate);
 		}
 	}

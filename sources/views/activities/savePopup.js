@@ -95,8 +95,21 @@ export default class SaveForm extends JetView {
 		};
 	}
 
+	init() {
+		const formView = this.$$("editForm");
+		const button = this.$$("onSave");
+		this.on(button, "onItemClick", () => {
+			if (formView.validate()) {
+				if (this.id) { activities.updateItem(this.id, formView.getValues()); }
+				else { activities.add(formView.getValues()); }
+				this.closeWindow();
+			}
+		});
+	}
+
 	showWindow(id) {
 		this.getRoot().show();
+		this.id = id;
 		webix.promise.all([
 			contacts.waitData,
 			activitytypes.waitData,
@@ -104,17 +117,10 @@ export default class SaveForm extends JetView {
 		]).then(() => {
 			const formView = this.$$("editForm");
 			const button = this.$$("onSave");
-			let mode = id ? "Edit" : "Add";
+			let mode = this.id ? "Edit" : "Add";
 			button.setValue(mode);
 			this.$$("headerWindow").setHTML(`${mode} activity`);
-			if (id) formView.setValues(activities.getItem(id));
-			button.attachEvent("onItemClick", () => {
-				if (formView.validate()) {
-					if (id) { activities.updateItem(id, formView.getValues()); }
-					else { activities.add(formView.getValues()); }
-					this.closeWindow();
-				}
-			});
+			if (this.id) formView.setValues(activities.getItem(this.id));
 		});
 	}
 
