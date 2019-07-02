@@ -1,0 +1,29 @@
+.contact-list .webix_list_item {
+	display: flex;
+	align-items: center;
+}
+
+.contact-list_avatar {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #ccc;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center;
+}
+
+.contact-info_photo {
+	width: 100%;
+	height: auto;
+}
+
+.contact-info .webix_template {
+	display: flex;
+	flex-flow: wrap;
+}
+
+.contact-info .webix_template>div {
+	line-height: 30px;
+	flex: 1;
+}

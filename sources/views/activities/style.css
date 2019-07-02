@@ -1,0 +1,4 @@
+.activities-table .wxi-trash,
+.activities-table .wxi-pencil {
+	cursor: pointer;
+}
