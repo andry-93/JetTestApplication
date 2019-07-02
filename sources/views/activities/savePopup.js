@@ -14,7 +14,7 @@ export default class SaveForm extends JetView {
 			width: 500,
 			head: {
 				cols: [
-					{template: "Add (*edit) activity", type: "header", borderless: true},
+					{template: "Add (*edit) activity", type: "header", borderless: true, localId: "headerWindow"},
 					{view: "icon",
 						icon: "wxi-close",
 						tooltip: "Close window",
@@ -37,23 +37,13 @@ export default class SaveForm extends JetView {
 						view: "richselect",
 						label: "Type",
 						name: "TypeID",
-						options: {
-							body: {
-								template: "#value#",
-								data: activitytypes
-							}
-						}
+						options: activitytypes
 					},
 					{
 						view: "richselect",
 						label: "Contact",
 						name: "ContactID",
-						options: {
-							body: {
-								template: "#value#",
-								data: contacts
-							}
-						}
+						options: contacts
 					},
 					{
 						margin: 10,
@@ -105,40 +95,39 @@ export default class SaveForm extends JetView {
 		};
 	}
 
+	init() {
+		const formView = this.$$("editForm");
+		const button = this.$$("onSave");
+		this.on(button, "onItemClick", () => {
+			if (formView.validate()) {
+				if (this.id) { activities.updateItem(this.id, formView.getValues()); }
+				else { activities.add(formView.getValues()); }
+				this.closeWindow();
+			}
+		});
+	}
+
 	showWindow(id) {
 		this.getRoot().show();
+		this.id = id;
 		webix.promise.all([
 			contacts.waitData,
 			activitytypes.waitData,
 			activities.waitData
 		]).then(() => {
 			const formView = this.$$("editForm");
-			if (id) {
-				formView.setValues(activities.getItem(id));
-				this.$$("onSave").attachEvent("onItemClick", () => {
-					if (formView.validate()) {
-						activities.updateItem(id, formView.getValues());
-						this.closeWindow();
-					}
-				});
-			}
-			else {
-				this.$$("onSave").attachEvent("onItemClick", () => {
-					if (formView.validate()) {
-						activities.add(formView.getValues());
-						this.closeWindow();
-					}
-				});
-			}
+			const button = this.$$("onSave");
+			let mode = this.id ? "Edit" : "Add";
+			button.setValue(mode);
+			this.$$("headerWindow").setHTML(`${mode} activity`);
+			if (this.id) formView.setValues(activities.getItem(this.id));
 		});
 	}
 
 	closeWindow() {
-		this.getRoot().close();
-	}
-
-	onEdit(id) {
-		this.$$("editForm").setValues(activities.getItem(id));
-		// activities.updateItem(id, this.$$("editForm").getValues());
+		const formView = this.$$("editForm");
+		formView.clear();
+		formView.clearValidation();
+		this.getRoot().hide();
 	}
 }

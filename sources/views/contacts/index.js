@@ -6,7 +6,6 @@ export default class Start extends JetView {
 	config() {
 		return {
 			rows: [
-				{type: "header", template: "Contacts", css: "webix_header app_header"},
 				{
 					cols: [
 						{
@@ -57,11 +56,14 @@ export default class Start extends JetView {
 
 	urlChange() {
 		const contactList = this.$$("contactList");
+		const idSelectItem = contactList.getSelectedId();
 		const id = this.getParam("id");
 		contacts.waitData.then(
 			() => {
 				if (id && contactList.exists(id)) {
-					contactList.select(id);
+					if (!idSelectItem) {
+						contactList.select(id);
+					}
 				}
 				else contactList.select(contactList.getFirstId());
 			}

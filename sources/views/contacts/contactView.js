@@ -118,7 +118,7 @@ export default class Start extends JetView {
 				<i class="fas fa-briefcase"></i> <span>${obj.Company || ""}</span><br>
 			</div>
 			<div>
-				<i class="far fa-calendar-alt"></i> <span>${obj.Birthday || ""}</span><br>
+				<i class="far fa-calendar-alt"></i> <span>${webix.i18n.dateFormatStr(obj.Birthday) || ""}</span><br>
 				<i class="fas fa-map-marker-alt"></i> <span>${obj.Address || ""}</span>
 			</div>
 		`;

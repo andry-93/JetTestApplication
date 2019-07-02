@@ -1,6 +1,7 @@
 const dateFormat = webix.Date.strToDate("%d-%m-%Y %H:%i");
 const saveFormatDate = webix.Date.dateToStr("%Y-%m-%d");
 const saveFormatTime = webix.Date.dateToStr("%H:%i");
+const saveFormatDateTime = webix.Date.dateToStr("%Y-%m-%d %H:%i");
 
 export const activities = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/activities/",
@@ -15,7 +16,8 @@ export const activities = new webix.DataCollection({
 			obj.DueDate = new Date(obj.DueDate);
 		},
 		$save: (obj) => {
-			obj.DueDate = `${saveFormatDate(obj.DueDate)} ${saveFormatTime(obj.DueTime)}`;
+			delete obj.DueTime;
+			obj.DueDate = saveFormatDateTime(obj.DueDate);
 		}
 	}
 });
