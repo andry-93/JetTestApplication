@@ -86,12 +86,40 @@ export default class EditView extends JetView {
 										{
 											view: "text",
 											name: "Phone",
-											label: "Phone"
+											label: "Phone",
+											placeholder: "+ 12 345 678 90 12",
+											pattern: {mask: "+ ### ## ### ## ##", allow: /[0-9]/g}
 										},
 										{
 											view: "datepicker",
 											name: "Birthday",
 											label: "Birthday"
+										},
+										{
+											cols: [
+												{
+													borderless: true,
+													template: "<img class='contactFormPhoto' src='#Photo#'>",
+													localId: "contactPhoto",
+													css: "contact_photo",
+													height: 200
+												},
+												{
+													rows: [
+														{},
+														{
+															view: "uploader",
+															value: "Change photo",
+															accept: "image/jpeg, image/png",
+															multiple: false
+														},
+														{
+															view: "button",
+															label: "Delete photo"
+														}
+													]
+												}
+											]
 										}
 									]
 								}
@@ -112,6 +140,7 @@ export default class EditView extends JetView {
 								{
 									view: "button",
 									autowidth: true,
+									type: "form",
 									value: "Save (*add)",
 									localId: "onSave"
 								}

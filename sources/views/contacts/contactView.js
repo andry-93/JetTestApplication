@@ -77,6 +77,26 @@ export default class Start extends JetView {
 							cols: [
 								Info
 							]
+						},
+						{height: 20},
+						{
+							rows: [
+								{
+									view: "tabbar",
+									localId: "contactTableTabBar",
+									multiview: true,
+									options: [
+										{id: "activitiesInfo", value: "Activities"},
+										{id: "filesInfo", value: "Files"}
+									]
+								},
+								{
+									cells: [
+										{id: "activitiesInfo"},
+										{id: "filesInfo"}
+									]
+								}
+							]
 						}
 					]
 				},
