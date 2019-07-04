@@ -18,6 +18,8 @@ export default class activitiesInfo extends JetView {
 					id: "State",
 					header: "",
 					template: "{common.checkbox()}",
+					checkValue: "Close",
+					uncheckValue: "Open",
 					width: 40
 				},
 				{
