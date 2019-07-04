@@ -1,5 +1,5 @@
 .webixappstart{
-    opacity:0;
+    opacity: 0;
 }
 .webixapp{
     transition: opacity 500ms;
@@ -9,13 +9,13 @@
 /*data loading status*/
 .status_good, .status_error, .status_saving{
 	text-align: center;
-	margin-left:-12px;
+	margin-left: -12px;
 }
 .status_error{
-	color:red;
+	color: red;
 }
 .status_good{
-	color:green;
+	color: green;
 }
 
 /*login form*/
@@ -43,20 +43,21 @@
         -webkit-transform: translateX(0);
     }
 }
-.app_header.webix_header{
-	text-align:center;
-}
 .app_layout.webix_layout_clean{
 	background: #EBEDF0;
 }
 .app_start .webix_template{
-	padding:12px 12px;
+	padding: 12px 12px;
 }
 .app_menu .webix_icon{
-	font-size:20px;
-	vertical-align:middle;
+	font-size: 20px;
+	vertical-align: middle;
 }
 
 .text-center {
     text-align: center;
+}
+
+.light-grey {
+    background-color: #eeeeee;
 }

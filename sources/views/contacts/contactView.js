@@ -102,8 +102,7 @@ export default class Start extends JetView {
 							]
 						}
 					]
-				},
-				{}
+				}
 			]
 		};
 	}

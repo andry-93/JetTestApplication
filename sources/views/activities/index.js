@@ -58,6 +58,7 @@ export default class Activities extends JetView {
 			activities.waitData,
 			activitytypes.waitData
 		]).then(() => {
+			activities.filter();
 			this.$$("activitiesTable").sync(activities);
 		});
 	}

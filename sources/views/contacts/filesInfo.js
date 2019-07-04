@@ -6,7 +6,7 @@ export default class filesInfo extends JetView {
 			view: "datatable",
 			localId: "contactFilesTable",
 			select: true,
-			scrollX: false,
+			scroll: "auto",
 			rightSplit: 1,
 			columns: [
 				{

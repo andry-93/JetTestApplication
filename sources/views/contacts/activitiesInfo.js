@@ -2,15 +2,15 @@ import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
 import {activitytypes} from "../../models/activitytypes";
 import {contacts} from "../../models/contacts";
+import SaveForm from "../activities/savePopup";
 
 export default class activitiesInfo extends JetView {
 	config() {
 		const contactTable = {
 			view: "datatable",
-			autoheight: true,
 			localId: "contactActivitiesTable",
 			select: true,
-			scrollX: false,
+			scroll: "auto",
 			leftSplit: 1,
 			rightSplit: 2,
 			columns: [
@@ -51,9 +51,11 @@ export default class activitiesInfo extends JetView {
 				}
 			],
 			onClick: {
-				"wxi-trash": () => false
+				"wxi-trash": this.deleteColumn,
+				"wxi-pencil": this.editColumn
 			}
 		};
+
 		return {
 			rows: [
 				contactTable,
@@ -66,12 +68,17 @@ export default class activitiesInfo extends JetView {
 							type: "icon",
 							css: "webix_primary",
 							label: "Add activity",
-							icon: "fas fa-plus"
+							icon: "fas fa-plus",
+							click: () => this.window.showWindow()
 						}
 					]
 				}
 			]
 		};
+	}
+
+	init() {
+		this.window = this.ui(SaveForm);
 	}
 
 	urlChange() {
@@ -84,5 +91,20 @@ export default class activitiesInfo extends JetView {
 			activities.filter(obj => +obj.ContactID === +this.getParam("id", true));
 			table.sync(activities);
 		});
+	}
+
+	deleteColumn(_e, id) {
+		webix.confirm({
+			title: "Delete",
+			text: "Are you sure?"
+		}).then(() => {
+			activities.remove(id);
+		});
+		return false;
+	}
+
+	editColumn(_e, id) {
+		this.$scope.window.showWindow(id);
+		return false;
 	}
 }
