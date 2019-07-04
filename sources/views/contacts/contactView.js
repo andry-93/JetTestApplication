@@ -1,6 +1,8 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
+import activitiesInfo from "./activitiesInfo";
+import filesInfo from "./filesInfo";
 
 export default class Start extends JetView {
 	config() {
@@ -80,6 +82,7 @@ export default class Start extends JetView {
 						},
 						{height: 20},
 						{
+							borderless: true,
 							rows: [
 								{
 									view: "tabbar",
@@ -92,8 +95,8 @@ export default class Start extends JetView {
 								},
 								{
 									cells: [
-										{id: "activitiesInfo"},
-										{id: "filesInfo"}
+										{id: "activitiesInfo", $subview: activitiesInfo},
+										{id: "filesInfo", $subview: filesInfo}
 									]
 								}
 							]
