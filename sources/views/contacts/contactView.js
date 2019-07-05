@@ -40,6 +40,7 @@ export default class Start extends JetView {
 					icon: "far fa-edit",
 					label: "Edit",
 					click() {
+						this.$scope.getParentView().setParam("mode", "Edit");
 						this.$scope.show("contacts.edit");
 					}
 				}

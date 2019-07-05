@@ -24,9 +24,9 @@ export default class Start extends JetView {
 										height: 62
 									},
 									on: {
-										onAfterSelect: (id) => {
-											this.setParam("id", id, true);
-											this.show("contacts.contactView");
+										onAfterSelect(id) {
+											this.$scope.show("contacts.contactView");
+											this.$scope.setParam("id", id);
 										}
 									}
 								},
@@ -37,6 +37,7 @@ export default class Start extends JetView {
 									icon: "fas fa-plus",
 									label: "Add contact",
 									click() {
+										this.$scope.setParam("mode", "Add");
 										this.$scope.show("contacts.edit");
 									}
 								}

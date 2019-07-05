@@ -6,7 +6,7 @@ export default class EditView extends JetView {
 	config() {
 		return {
 			rows: [
-				{type: "header", template: "Edit (*add new) contact", css: "webix_header app_header"},
+				{type: "header", localId: "contactLabel", template: " ", css: "webix_header app_header"},
 				{
 					view: "form",
 					localId: "formView",
@@ -20,31 +20,30 @@ export default class EditView extends JetView {
 											view: "text",
 											label: "First name",
 											name: "FirstName",
-											labelWidth: 90
+											labelWidth: 90,
+											invalidMessage: "First name can't be empty"
 										},
 										{
 											view: "text",
 											label: "Last name",
 											name: "LastName",
-											labelWidth: 90
+											labelWidth: 90,
+											invalidMessage: "Last name can't be empty"
 										},
 										{
 											view: "datepicker",
 											label: "Joining date",
 											name: "StartDate",
-											labelWidth: 90
+											labelWidth: 90,
+											placeholder: "mm/dd/YYYY",
+											invalidMessage: "Joining date is incorrect"
 										},
 										{
 											view: "richselect",
 											label: "Contact",
 											name: "StatusID",
 											labelWidth: 90,
-											options: {
-												body: {
-													template: "#value#",
-													data: statuses
-												}
-											}
+											options: statuses
 										},
 										{
 											view: "text",
@@ -56,12 +55,14 @@ export default class EditView extends JetView {
 											view: "text",
 											label: "Company",
 											name: "Company",
-											labelWidth: 90
+											labelWidth: 90,
+											invalidMessage: "Company can't be empty"
 										},
 										{
 											view: "text",
 											label: "Website",
-											labelWidth: 90
+											labelWidth: 90,
+											name: "Website"
 										},
 										{
 											view: "textarea",
@@ -76,7 +77,8 @@ export default class EditView extends JetView {
 										{
 											view: "text",
 											name: "Email",
-											label: "Email"
+											label: "Email",
+											placeholder: "e@mail.com"
 										},
 										{
 											view: "text",
@@ -88,21 +90,32 @@ export default class EditView extends JetView {
 											name: "Phone",
 											label: "Phone",
 											placeholder: "+ 12 345 678 90 12",
-											pattern: {mask: "+ ### ## ### ## ##", allow: /[0-9]/g}
+											pattern: {mask: "+ ### ## ### ## ##", allow: /[0-9]/g},
+											invalidMessage: "Phone can't be empty"
 										},
 										{
 											view: "datepicker",
 											name: "Birthday",
-											label: "Birthday"
+											label: "Birthday",
+											placeholder: "mm/dd/YYYY",
+											invalidMessage: "Birthday is incorrect"
 										},
 										{
 											cols: [
 												{
-													borderless: true,
-													template: "<img class='contactFormPhoto' src='#Photo#'>",
-													localId: "contactPhoto",
-													css: "contact_photo",
-													height: 200
+													paddingY: 3,
+													paddingX: 2,
+													rows: [
+														{
+															borderless: false,
+															type: "clean",
+															data: {
+																Photo: "./sources/styles/img/nouser.jpg"
+															},
+															template: "<div style='height: 100%; background-size: cover; background-position: center; background-image: url(#Photo#)'></div>",
+															localId: "contactPhoto"
+														}
+													]
 												},
 												{
 													rows: [
@@ -110,12 +123,27 @@ export default class EditView extends JetView {
 														{
 															view: "uploader",
 															value: "Change photo",
-															accept: "image/jpeg, image/png",
-															multiple: false
+															accept: "image/jpeg, image/png, image/jpg",
+															multiple: false,
+															on: {
+																onBeforeFileAdd: (upload) => {
+																	const file = upload.file;
+																	const contactPhoto = this.$$("contactPhoto");
+																	let reader = new FileReader();
+																	reader.onload = (evt) => {
+																		contactPhoto.setValues({Photo: evt.target.result});
+																	};
+																	reader.readAsDataURL(file);
+																	return false;
+																}
+															}
 														},
 														{
 															view: "button",
-															label: "Delete photo"
+															label: "Delete photo",
+															click: () => {
+																this.$$("contactPhoto").setValues({Photo: "./sources/styles/img/nouser.jpg"});
+															}
 														}
 													]
 												}
@@ -141,28 +169,63 @@ export default class EditView extends JetView {
 									view: "button",
 									autowidth: true,
 									type: "form",
-									value: "Save (*add)",
+									value: "",
 									localId: "onSave"
 								}
 							]
 						}
-					]
+					],
+					rules: {
+						FirstName: webix.rules.isNotEmpty,
+						LastName: webix.rules.isNotEmpty,
+						StatusID: webix.rules.isNotEmpty,
+						Company: webix.rules.isNotEmpty,
+						StartDate: value => value <= new Date() && value !== null,
+						Birthday: value => value < new Date() && value !== null
+					}
 				}
 			]
 		};
 	}
 
 	init() {
-		webix.promise.all([
-			contacts.waitData,
-			statuses.waitData
-		]).then(() => {
-			let formView = this.$$("formView");
-			this.$$("onSave").attachEvent("onItemClick", () => {
-				if (formView.validate()) {
-					contacts.add(formView.getValues());
+		const mode = this.getParam("mode", true);
+		const contactLabel = this.$$("contactLabel");
+		const onSave = this.$$("onSave");
+		const contactPhoto = this.$$("contactPhoto");
+		const formView = this.$$("formView");
+		if (mode) {
+			contactLabel.setHTML(`${mode} contact`);
+			onSave.setValue(mode);
+			onSave.resize();
+
+			webix.promise.all([
+				contacts.waitData,
+				statuses.waitData
+			]).then(() => {
+				if (mode === "Edit") {
+					const id = this.getParam("id", true);
+					const contact = contacts.getItem(id);
+					if (contact.Photo || contact.Photo !== "") {
+						contactPhoto.setValues({Photo: contact.Photo});
+					}
+					formView.setValues(contact);
 				}
+
+				onSave.attachEvent("onItemClick", () => {
+					if (formView.validate()) {
+						const values = formView.getValues();
+						values.Photo = this.$$("contactPhoto").getValues().Photo;
+						if (!values.id) {
+							contacts.add(values);
+						}
+						else {
+							contacts.updateItem(values.id, values);
+						}
+						this.show("contacts.contactView");
+					}
+				});
 			});
-		});
+		}
 	}
 }
