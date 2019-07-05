@@ -106,7 +106,7 @@ export default class activitiesInfo extends JetView {
 	}
 
 	editColumn(_e, id) {
-		this.$scope.window.showWindow(id);
+		this.$scope.window.showWindow(id, true);
 		return false;
 	}
 }

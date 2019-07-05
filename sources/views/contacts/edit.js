@@ -189,11 +189,11 @@ export default class EditView extends JetView {
 	}
 
 	init() {
-		const mode = this.getParam("mode", true);
 		const contactLabel = this.$$("contactLabel");
 		const onSave = this.$$("onSave");
 		const contactPhoto = this.$$("contactPhoto");
 		const formView = this.$$("formView");
+		const mode = this.getParam("mode", true);
 		if (mode) {
 			contactLabel.setHTML(`${mode} contact`);
 			onSave.setValue(mode);
@@ -214,13 +214,13 @@ export default class EditView extends JetView {
 
 				onSave.attachEvent("onItemClick", () => {
 					if (formView.validate()) {
-						const values = formView.getValues();
-						values.Photo = this.$$("contactPhoto").getValues().Photo;
-						if (!values.id) {
-							contacts.add(values);
+						const formValues = formView.getValues();
+						formValues.Photo = contactPhoto.getValues().Photo;
+						if (!formValues.id) {
+							contacts.add(formValues);
 						}
 						else {
-							contacts.updateItem(values.id, values);
+							contacts.updateItem(formValues.id, formValues);
 						}
 						this.show("contacts.contactView");
 					}

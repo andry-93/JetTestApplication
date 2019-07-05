@@ -43,6 +43,7 @@ export default class SaveForm extends JetView {
 						view: "richselect",
 						label: "Contact",
 						name: "ContactID",
+						localId: "contact",
 						options: contacts
 					},
 					{
@@ -107,7 +108,10 @@ export default class SaveForm extends JetView {
 		});
 	}
 
-	showWindow(id) {
+	showWindow(id, disable) {
+		if (disable) {
+			this.$$("contact").disable();
+		}
 		this.getRoot().show();
 		this.id = id;
 		webix.promise.all([
