@@ -8,7 +8,6 @@ export default class Start extends JetView {
 	config() {
 		let Toolbar = {
 			view: "toolbar",
-			paddingX: 10,
 			borderless: true,
 			elements: [
 				{
@@ -48,6 +47,7 @@ export default class Start extends JetView {
 		};
 
 		let Info = {
+			paddingX: -10,
 			cols: [
 				{
 					maxWidth: 200,
@@ -124,7 +124,7 @@ export default class Start extends JetView {
 	}
 
 	selectedContactImg(obj) {
-		let photo = obj.Photo || "https://www.achievesuccesstutoring.com/wp-content/uploads/2019/05/no-photo-icon-22.jpg.png";
+		let photo = obj.Photo || "./sources/styles/img/nouser.jpg";
 		let status = obj.Status || "";
 		return `
 			<img src="${photo}" class="contact-info_photo" ondragstart="return false"/>

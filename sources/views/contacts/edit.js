@@ -146,7 +146,8 @@ export default class EditView extends JetView {
 															}
 														}
 													]
-												}
+												},
+												{}
 											]
 										}
 									]

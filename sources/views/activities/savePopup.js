@@ -77,7 +77,8 @@ export default class SaveForm extends JetView {
 								view: "button",
 								localId: "onSave",
 								label: "Add (*save)",
-								autoWidth: true
+								autoWidth: true,
+								css: "webix_primary"
 							},
 							{
 								view: "button",

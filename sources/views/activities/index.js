@@ -15,6 +15,7 @@ export default class Activities extends JetView {
 				{},
 				{
 					view: "button",
+					css: "webix_primary",
 					autowidth: true,
 					type: "icon",
 					icon: "fas fa-plus-square",
