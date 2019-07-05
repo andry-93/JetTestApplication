@@ -1,6 +1,8 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
+import {activities} from "../../models/activities";
+import {files} from "../../models/files";
 import activitiesInfo from "./activitiesInfo";
 import filesInfo from "./filesInfo";
 
@@ -29,8 +31,17 @@ export default class Start extends JetView {
 					autowidth: true,
 					type: "icon",
 					icon: "far fa-trash-alt",
-					disabled: true,
-					label: "Delete"
+					label: "Delete",
+					click: () => {
+						const id = this.getParam("id", true);
+						webix.confirm({
+							title: "Delete",
+							text: "Are you sure?"
+						}).then((_e) => {
+							this.deleteContact(_e, id);
+						});
+						return false;
+					}
 				},
 				{
 					view: "button",
@@ -149,5 +160,18 @@ export default class Start extends JetView {
 
 	selectedName(obj) {
 		return `<span>${obj.value || ""}</span>`;
+	}
+
+	deleteContact(_e, id) {
+		contacts.remove(id);
+		const activitiList = activities.find(obj => obj.ContactID.toString() === id.toString());
+		if (activitiList.length !== 0) {
+			activitiList.forEach(obj => activities.remove(obj.id));
+		}
+		const fileList = files.find(obj => obj.ContactID.toString() === id.toString());
+		if (fileList.length !== 0) {
+			fileList.forEach(obj => files.remove(obj.id));
+		}
+		this.show("contacts.contactView");
 	}
 }
