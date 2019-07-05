@@ -9,6 +9,7 @@ export default class Activities extends JetView {
 	config() {
 		let Toolbar = {
 			view: "toolbar",
+			borderless: true,
 			paddingX: 10,
 			elements: [
 				{},
@@ -28,6 +29,8 @@ export default class Activities extends JetView {
 			scroll: "auto",
 			css: "activities-table",
 			localId: "activitiesTable",
+			leftSplit: 1,
+			rightSplit: 2,
 			columns: [
 				{id: "State", header: "", width: 40, checkValue: "Close", uncheckValue: "Open", template: "{common.checkbox()}"},
 				{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], width: 150, collection: activitytypes, sort: "string"},
