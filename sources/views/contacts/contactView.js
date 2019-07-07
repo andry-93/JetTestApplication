@@ -32,15 +32,8 @@ export default class Start extends JetView {
 					type: "icon",
 					icon: "far fa-trash-alt",
 					label: "Delete",
-					click: () => {
-						const id = this.getParam("id", true);
-						webix.confirm({
-							title: "Delete",
-							text: "Are you sure?"
-						}).then((_e) => {
-							this.deleteContact(_e, id);
-						});
-						return false;
+					click() {
+						this.$scope.deleteContact();
 					}
 				},
 				{
@@ -162,16 +155,27 @@ export default class Start extends JetView {
 		return `<span>${obj.value || ""}</span>`;
 	}
 
-	deleteContact(_e, id) {
-		contacts.remove(id);
+	deleteContact() {
+		const id = this.getParam("id", true);
 		const activitiList = activities.find(obj => obj.ContactID.toString() === id.toString());
-		if (activitiList.length !== 0) {
-			activitiList.forEach(obj => activities.remove(obj.id));
-		}
 		const fileList = files.find(obj => obj.ContactID.toString() === id.toString());
-		if (fileList.length !== 0) {
-			fileList.forEach(obj => files.remove(obj.id));
-		}
-		this.show("contacts.contactView");
+		webix.confirm({
+			title: "Delete",
+			text: "Are you sure?"
+		}).then(() => {
+			contacts.remove(id);
+			if (!this.isEmpty(activitiList)) {
+				activitiList.forEach(obj => activities.remove(obj.id));
+			}
+			if (!this.isEmpty(fileList)) {
+				fileList.forEach(obj => files.remove(obj.id));
+			}
+			this.show("contacts.contactView");
+		});
+		return false;
+	}
+
+	isEmpty(obj) {
+		return Object.keys(obj).length === 0;
 	}
 }
