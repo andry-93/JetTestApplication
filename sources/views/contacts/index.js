@@ -12,6 +12,30 @@ export default class Start extends JetView {
 							type: "list",
 							rows: [
 								{
+									view: "text",
+									labelPosition: "top",
+									placeholder: "All fields",
+									label: "Find a contact",
+									on: {
+										onTimedKeyPress() {
+											let text = this.getValue().toString().toLowerCase();
+											this.$scope.$$("contactList").filter((obj) => {
+												let filter = [
+													obj.value,
+													obj.Company,
+													obj.Address,
+													obj.Job,
+													obj.Website,
+													obj.Phone,
+													obj.Email
+												].join("|");
+												filter = filter.toString().toLowerCase();
+												return filter.indexOf(text) !== -1;
+											});
+										}
+									}
+								},
+								{
 									view: "list",
 									borderless: true,
 									localId: "contactList",
