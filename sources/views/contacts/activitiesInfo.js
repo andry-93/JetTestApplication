@@ -71,7 +71,7 @@ export default class ActivitiesInfo extends JetView {
 							css: "webix_primary",
 							label: "Add activity",
 							icon: "fas fa-plus",
-							click: () => this.window.showWindow("", false)
+							click: () => this.window.showWindow()
 						}
 					]
 				}
