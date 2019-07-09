@@ -7,9 +7,12 @@ import "./style.css";
 
 function activitiesFilter(obj) {
 	const currentDate = new Date().setHours(0, 0, 0, 0);
+	let currentYear = new Date(currentDate).getFullYear();
+	let currentMonth = new Date(currentDate).getMonth();
 	let tomorrowDate = new Date(currentDate);
 	tomorrowDate.setDate(tomorrowDate.getDate() + 1);
 	let lastDayWeek = new Date(currentDate);
+	let lastDayMonth = new Date(currentYear, currentMonth + 1, 0);
 	lastDayWeek.setDate(lastDayWeek.getDate() - lastDayWeek.getDay() + 6);
 	obj.table.registerFilter(
 		obj.tabs,
@@ -26,7 +29,7 @@ function activitiesFilter(obj) {
 					case "thisWeek":
 						return +actualDate >= +currentDate && +actualDate <= +lastDayWeek;
 					case "thisMonth":
-						return false;
+						return +actualDate >= +currentDate && +actualDate <= +lastDayMonth;
 					case "overdue":
 						return +actualDate < +currentDate && item.State !== "Close";
 					case "completed":
