@@ -24,10 +24,9 @@ export default class TopView extends JetView {
 
 		let ui = {
 			type: "clean",
-			paddingX: 5,
 			css: "app_layout",
 			rows: [
-				{localId: "headerApp", type: "header", template: "Activaties", css: "webix_header app_header"},
+				{localId: "headerApp", type: "header", template: "Activaties", css: "webix_header webix_dark"},
 				{
 					cols: [
 						{

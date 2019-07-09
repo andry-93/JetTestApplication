@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
-import {activitytypes} from "../../models/activitytypes";
+import {activityTypes} from "../../models/activityTypes";
 import {activities} from "../../models/activities";
 
 export default class SaveForm extends JetView {
@@ -37,12 +37,13 @@ export default class SaveForm extends JetView {
 						view: "richselect",
 						label: "Type",
 						name: "TypeID",
-						options: activitytypes
+						options: activityTypes
 					},
 					{
 						view: "richselect",
 						label: "Contact",
 						name: "ContactID",
+						localId: "contact",
 						options: contacts
 					},
 					{
@@ -76,7 +77,8 @@ export default class SaveForm extends JetView {
 								view: "button",
 								localId: "onSave",
 								label: "Add (*save)",
-								autoWidth: true
+								autoWidth: true,
+								css: "webix_primary"
 							},
 							{
 								view: "button",
@@ -107,12 +109,12 @@ export default class SaveForm extends JetView {
 		});
 	}
 
-	showWindow(id) {
+	showWindow(id, disable = false) {
 		this.getRoot().show();
 		this.id = id;
 		webix.promise.all([
 			contacts.waitData,
-			activitytypes.waitData,
+			activityTypes.waitData,
 			activities.waitData
 		]).then(() => {
 			const formView = this.$$("editForm");
@@ -121,6 +123,8 @@ export default class SaveForm extends JetView {
 			button.setValue(mode);
 			this.$$("headerWindow").setHTML(`${mode} activity`);
 			if (this.id) formView.setValues(activities.getItem(this.id));
+			if (disable) this.$$("contact").disable();
+			else this.$$("contact").enable();
 		});
 	}
 
