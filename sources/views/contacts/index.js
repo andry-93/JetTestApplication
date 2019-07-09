@@ -25,8 +25,7 @@ export default class Start extends JetView {
 									},
 									on: {
 										onAfterSelect(id) {
-											this.$scope.show("contacts.contactView");
-											this.$scope.setParam("id", id);
+											this.$scope.show({contactId: id}).then(() => this.$scope.show("contacts.contactView"));
 										}
 									}
 								},
@@ -58,7 +57,7 @@ export default class Start extends JetView {
 	urlChange() {
 		const contactList = this.$$("contactList");
 		const idSelectItem = contactList.getSelectedId();
-		const id = this.getParam("id");
+		const id = this.getParam("contactId");
 		contacts.waitData.then(
 			() => {
 				if (id && contactList.exists(id)) {

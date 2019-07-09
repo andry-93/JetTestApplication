@@ -1,13 +1,13 @@
 import {JetView} from "webix-jet";
 import {files} from "../../models/files";
 
-export default class filesInfo extends JetView {
+export default class FilesInfo extends JetView {
 	config() {
 		const contactTable = {
 			view: "datatable",
 			localId: "filesTable",
 			select: true,
-			scroll: "auto",
+			scroll: true,
 			rightSplit: 1,
 			columns: [
 				{
@@ -55,7 +55,7 @@ export default class filesInfo extends JetView {
 							autosend: false,
 							on: {
 								onBeforeFileAdd: (upload) => {
-									const id = this.getParam("id", true);
+									const id = this.getParam("contactId", true);
 									files.add({
 										Name: upload.name,
 										Change: upload.file.lastModifiedDate,
@@ -75,7 +75,7 @@ export default class filesInfo extends JetView {
 
 	urlChange() {
 		files.waitData.then(() => {
-			files.data.filter(file => file.contactId.toString() === this.getParam("id", true).toString());
+			files.data.filter(file => file.contactId.toString() === this.getParam("contactId", true).toString());
 			this.$$("filesTable").sync(files);
 		});
 	}
