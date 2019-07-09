@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
 import {contacts} from "../../models/contacts";
-import {activitytypes} from "../../models/activitytypes";
+import {activityTypes} from "../../models/activityTypes";
 import SaveForm from "./savePopup";
 import "./style.css";
 
@@ -86,14 +86,14 @@ export default class Activities extends JetView {
 
 		let ActivitiesTable = {
 			view: "datatable",
-			scroll: "auto",
+			scroll: true,
 			css: "activities-table",
 			localId: "activitiesTable",
 			leftSplit: 1,
 			rightSplit: 2,
 			columns: [
 				{id: "State", header: "", width: 40, checkValue: "Close", uncheckValue: "Open", template: "{common.checkbox()}"},
-				{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], width: 150, collection: activitytypes, sort: "string"},
+				{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], width: 150, collection: activityTypes, sort: "string"},
 				{id: "DueDate", header: ["Due date", {content: "dateRangeFilter"}], width: 300, sort: "date", format: webix.i18n.dateFormatStr},
 				{id: "Details", minWidth: 250, fillspace: true, sort: "string", header: ["Details", {content: "textFilter"}]},
 				{id: "ContactID", header: ["Contacts", {content: "richSelectFilter"}], minWidth: 250, fillspace: true, collection: contacts, sort: "string"},
@@ -119,7 +119,7 @@ export default class Activities extends JetView {
 		webix.promise.all([
 			contacts.waitData,
 			activities.waitData,
-			activitytypes.waitData
+			activityTypes.waitData
 		]).then(() => {
 			activities.filter();
 			const dataTable = this.$$("activitiesTable");

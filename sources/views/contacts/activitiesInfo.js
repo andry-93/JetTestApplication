@@ -1,16 +1,16 @@
 import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
-import {activitytypes} from "../../models/activitytypes";
+import {activityTypes} from "../../models/activityTypes";
 import {contacts} from "../../models/contacts";
 import SaveForm from "../activities/savePopup";
 
-export default class activitiesInfo extends JetView {
+export default class ActivitiesInfo extends JetView {
 	config() {
 		const contactTable = {
 			view: "datatable",
 			localId: "contactActivitiesTable",
 			select: true,
-			scroll: "auto",
+			scroll: true,
 			leftSplit: 1,
 			rightSplit: 2,
 			columns: [
@@ -26,7 +26,7 @@ export default class activitiesInfo extends JetView {
 					id: "TypeID",
 					header: {content: "selectFilter"},
 					fillspace: true,
-					options: activitytypes
+					options: activityTypes
 				},
 				{
 					id: "DueDate",
@@ -87,10 +87,10 @@ export default class activitiesInfo extends JetView {
 		webix.promise.all([
 			contacts.waitData,
 			activities.waitData,
-			activitytypes.waitData
+			activityTypes.waitData
 		]).then(() => {
 			const table = this.$$("contactActivitiesTable");
-			activities.filter(obj => +obj.ContactID === +this.getParam("id", true));
+			activities.filter(obj => +obj.ContactID === +this.getParam("contactId", true));
 			table.sync(activities);
 		});
 	}

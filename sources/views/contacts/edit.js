@@ -43,7 +43,12 @@ export default class EditView extends JetView {
 											label: "Contact",
 											name: "StatusID",
 											labelWidth: 90,
-											options: statuses
+											options: {
+												body: {
+													template: "#Value#",
+													data: statuses
+												}
+											}
 										},
 										{
 											view: "text",
@@ -205,7 +210,7 @@ export default class EditView extends JetView {
 				statuses.waitData
 			]).then(() => {
 				if (mode === "Edit") {
-					const id = this.getParam("id", true);
+					const id = this.getParam("contactId", true);
 					const contact = contacts.getItem(id);
 					if (contact.Photo || contact.Photo !== "") {
 						contactPhoto.setValues({Photo: contact.Photo});

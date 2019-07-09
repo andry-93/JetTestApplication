@@ -3,8 +3,8 @@ import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
 import {activities} from "../../models/activities";
 import {files} from "../../models/files";
-import activitiesInfo from "./activitiesInfo";
-import filesInfo from "./filesInfo";
+import ActivitiesInfo from "./activitiesInfo";
+import FilesInfo from "./filesInfo";
 
 export default class Start extends JetView {
 	config() {
@@ -94,14 +94,14 @@ export default class Start extends JetView {
 									localId: "contactTableTabBar",
 									multiview: true,
 									options: [
-										{id: "activitiesInfo", value: "Activities"},
-										{id: "filesInfo", value: "Files"}
+										{id: "ActivitiesInfo", value: "Activities"},
+										{id: "FilesInfo", value: "Files"}
 									]
 								},
 								{
 									cells: [
-										{id: "activitiesInfo", $subview: activitiesInfo},
-										{id: "filesInfo", $subview: filesInfo}
+										{id: "ActivitiesInfo", $subview: ActivitiesInfo},
+										{id: "FilesInfo", $subview: FilesInfo}
 									]
 								}
 							]
@@ -113,7 +113,7 @@ export default class Start extends JetView {
 	}
 
 	urlChange() {
-		let id = this.getParentView().getParam("id");
+		let id = this.getParam("contactId", true);
 		webix.promise.all([
 			contacts.waitData,
 			statuses.waitData
@@ -156,7 +156,7 @@ export default class Start extends JetView {
 	}
 
 	deleteContact() {
-		const id = this.getParam("id", true);
+		const id = this.getParam("contactId", true);
 		const activitiList = activities.find(obj => obj.ContactID.toString() === id.toString());
 		const fileList = files.find(obj => obj.ContactID.toString() === id.toString());
 		webix.confirm({
