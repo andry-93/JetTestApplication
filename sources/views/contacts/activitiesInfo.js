@@ -25,6 +25,7 @@ export default class ActivitiesInfo extends JetView {
 				{
 					id: "TypeID",
 					header: {content: "selectFilter"},
+					minWidth: 100,
 					fillspace: true,
 					options: activityTypes
 				},
@@ -32,11 +33,13 @@ export default class ActivitiesInfo extends JetView {
 					id: "DueDate",
 					header: {content: "dateRangeFilter"},
 					format: webix.i18n.longDateFormatStr,
+					minWidth: 150,
 					fillspace: true
 				},
 				{
 					id: "Details",
 					header: {content: "textFilter"},
+					minWidth: 150,
 					fillspace: true
 				},
 				{

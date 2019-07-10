@@ -14,18 +14,22 @@ export default class FilesInfo extends JetView {
 					id: "Name",
 					header: "Name",
 					sort: "string",
+					minWidth: 150,
 					fillspace: true
 				},
 				{
 					id: "Change",
 					header: "Change date",
 					sort: "date",
-					width: 150,
+					minWidth: 150,
+					fillspace: true,
 					format: webix.i18n.longDateFormatStr
 				},
 				{
 					id: "Size",
 					header: "Size",
+					minWidth: 100,
+					fillspace: true,
 					template: obj => `${Math.floor(obj.Size / 1024)} Kb`,
 					sort: (n, o) => n.Size - o.Size
 				},
