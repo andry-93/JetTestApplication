@@ -3,6 +3,8 @@ import {files} from "../../models/files";
 
 export default class FilesInfo extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+		
 		const contactTable = {
 			view: "datatable",
 			localId: "filesTable",
@@ -12,14 +14,14 @@ export default class FilesInfo extends JetView {
 			columns: [
 				{
 					id: "Name",
-					header: "Name",
+					header: _("Name"),
 					sort: "string",
 					minWidth: 150,
 					fillspace: true
 				},
 				{
 					id: "Change",
-					header: "Change date",
+					header: _("Change date"),
 					sort: "date",
 					minWidth: 150,
 					fillspace: true,
@@ -27,7 +29,7 @@ export default class FilesInfo extends JetView {
 				},
 				{
 					id: "Size",
-					header: "Size",
+					header: _("Size"),
 					minWidth: 100,
 					fillspace: true,
 					template: obj => `${Math.floor(obj.Size / 1024)} Kb`,
@@ -54,7 +56,7 @@ export default class FilesInfo extends JetView {
 							autowidth: true,
 							view: "uploader",
 							type: "icon",
-							label: " Upload file",
+							label: ` ${_("Upload files")}`,
 							icon: "fas fa-cloud-upload-alt",
 							autosend: false,
 							on: {
@@ -85,9 +87,10 @@ export default class FilesInfo extends JetView {
 	}
 
 	deleteColumn(_e, id) {
+		const _ = this.$scope.app.getService("locale")._;
 		webix.confirm({
-			title: "Delete",
-			text: "Are you sure?"
+			title: _("Delete"),
+			text: _("Are you sure?")
 		}).then(() => {
 			files.remove(id);
 		});

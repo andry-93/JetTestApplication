@@ -4,6 +4,8 @@ import {statuses} from "../../models/statuses";
 
 export default class EditView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{type: "header", localId: "contactLabel", template: " ", css: "webix_header app_header"},
@@ -18,60 +20,60 @@ export default class EditView extends JetView {
 									rows: [
 										{
 											view: "text",
-											label: "First name",
+											label: _("First name"),
 											name: "FirstName",
 											labelWidth: 90,
 											invalidMessage: "First name can't be empty"
 										},
 										{
 											view: "text",
-											label: "Last name",
+											label: _("Last name"),
 											name: "LastName",
 											labelWidth: 90,
 											invalidMessage: "Last name can't be empty"
 										},
 										{
 											view: "datepicker",
-											label: "Joining date",
+											label: _("Joining date"),
 											name: "StartDate",
-											labelWidth: 90,
+											labelWidth: 130,
 											placeholder: "mm/dd/YYYY",
 											invalidMessage: "Joining date is incorrect"
 										},
 										{
 											view: "richselect",
-											label: "Contact",
+											label: _("Contact"),
 											name: "StatusID",
 											labelWidth: 90,
 											options: {
 												body: {
-													template: "#Value#",
+													template: "<span class='fas #Icon# style='width: 18px;'></span> #Value#",
 													data: statuses
 												}
 											}
 										},
 										{
 											view: "text",
-											label: "Job",
+											label: _("Job"),
 											name: "Job",
 											labelWidth: 90
 										},
 										{
 											view: "text",
-											label: "Company",
+											label: _("Company"),
 											name: "Company",
 											labelWidth: 90,
 											invalidMessage: "Company can't be empty"
 										},
 										{
 											view: "text",
-											label: "Website",
+											label: _("Website"),
 											labelWidth: 90,
 											name: "Website"
 										},
 										{
 											view: "textarea",
-											label: "Address",
+											label: _("Address"),
 											name: "Address",
 											labelWidth: 90
 										}
@@ -93,7 +95,7 @@ export default class EditView extends JetView {
 										{
 											view: "text",
 											name: "Phone",
-											label: "Phone",
+											label: _("Phone"),
 											placeholder: "+ 12 345 678 90 12",
 											pattern: {mask: "+ ### ## ### ## ##", allow: /[0-9]/g},
 											invalidMessage: "Phone can't be empty"
@@ -101,7 +103,8 @@ export default class EditView extends JetView {
 										{
 											view: "datepicker",
 											name: "Birthday",
-											label: "Birthday",
+											labelWidth: 120,
+											label: _("Birthday"),
 											placeholder: "mm/dd/YYYY",
 											invalidMessage: "Birthday is incorrect"
 										},
@@ -127,7 +130,7 @@ export default class EditView extends JetView {
 														{},
 														{
 															view: "uploader",
-															value: "Change photo",
+															value: _("Change photo"),
 															accept: "image/jpeg, image/png, image/jpg",
 															multiple: false,
 															on: {
@@ -145,7 +148,7 @@ export default class EditView extends JetView {
 														},
 														{
 															view: "button",
-															label: "Delete photo",
+															label: _("Delete photo"),
 															click: () => {
 																this.$$("contactPhoto").setValues({Photo: "./sources/styles/img/nouser.jpg"});
 															}
@@ -166,7 +169,7 @@ export default class EditView extends JetView {
 								{
 									view: "button",
 									autowidth: true,
-									value: "Cancel",
+									value: _("Cancel"),
 									click() {
 										this.$scope.show("contacts.contactView");
 									}
@@ -195,14 +198,15 @@ export default class EditView extends JetView {
 	}
 
 	init() {
+		const _ = this.app.getService("locale")._;
 		const contactLabel = this.$$("contactLabel");
 		const onSave = this.$$("onSave");
 		const contactPhoto = this.$$("contactPhoto");
 		const formView = this.$$("formView");
 		const mode = this.getParam("mode", true);
 		if (mode) {
-			contactLabel.setHTML(`${mode} contact`);
-			onSave.setValue(mode);
+			contactLabel.setHTML(`${_(mode)} ${_("contact")}`);
+			onSave.setValue(_(mode));
 			onSave.resize();
 
 			webix.promise.all([

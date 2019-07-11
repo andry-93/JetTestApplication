@@ -2,6 +2,7 @@ import {JetView, plugins} from "webix-jet";
 
 export default class Settings extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		let menu = {
 			view: "menu",
 			localId: "menu",
@@ -10,8 +11,8 @@ export default class Settings extends JetView {
 			width: 180,
 			template: "<span class='fas #icon#' style='width: 18px;'></span> #value#",
 			data: [
-				{id: "settings.locale", value: "Locale", icon: "fa-globe-europe"},
-				{id: "settings.dataset", value: "Dataset", icon: "fa-table"}
+				{id: "settings.locale", value: _("Locale"), icon: "fa-globe-europe"},
+				{id: "settings.dataset", value: _("Dataset"), icon: "fa-table"}
 			]
 		};
 

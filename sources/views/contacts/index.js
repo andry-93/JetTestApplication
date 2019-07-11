@@ -4,6 +4,8 @@ import {contacts} from "../../models/contacts";
 
 export default class Start extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -13,9 +15,7 @@ export default class Start extends JetView {
 							rows: [
 								{
 									view: "text",
-									labelPosition: "top",
-									placeholder: "All fields",
-									label: "Find a contact",
+									placeholder: _("Find a contact"),
 									on: {
 										onTimedKeyPress() {
 											let text = this.getValue().toString().toLowerCase();
@@ -58,7 +58,7 @@ export default class Start extends JetView {
 									view: "button",
 									type: "icon",
 									icon: "fas fa-plus",
-									label: "Add contact",
+									label: _("Add contact"),
 									click() {
 										this.$scope.setParam("mode", "Add");
 										this.$scope.show("contacts.edit");

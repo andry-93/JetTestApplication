@@ -8,6 +8,8 @@ export default class DataEdit extends JetView {
 	}
 
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -18,14 +20,14 @@ export default class DataEdit extends JetView {
 					css: "webix_shadow_medium",
 					scroll: "auto",
 					rightSplit: 1,
+					leftSplit: 1,
 					columns: [
-						{id: "Value", editor: "text", header: "Value", minWidth: 110, fillspace: true},
 						{
 							id: "Icon",
 							editor: "combo",
 							collection: icons,
-							header: "Icon",
-							width: 50,
+							header: '<i class="fas fa-icons"></i>',
+							width: 45,
 							template: "<span class='fas #Icon#' style='width: 18px;'></span>",
 							suggest: {
 								template: "#value#",
@@ -34,13 +36,14 @@ export default class DataEdit extends JetView {
 								}
 							}
 						},
+						{id: "Value", editor: "text", header: _("Value"), minWidth: 110, fillspace: true},
 						{header: "", width: 40, template: "{common.trashIcon()}"}
 					],
 					onClick: {
 						"wxi-trash": this.deleteColumn
 					}
 				},
-				{view: "button", value: "Add", click: () => { this.addRow(); }}
+				{view: "button", value: _("Add"), click: () => { this.addRow(); }}
 			]
 		};
 	}

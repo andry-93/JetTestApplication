@@ -5,14 +5,16 @@ import {statuses} from "../../../models/statuses";
 
 export default class Dataset extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		let menu = {
 			view: "list",
 			localId: "dataMenu",
 			scroll: "auto",
 			select: true,
 			data: [
-				{id: "activityTypes", value: "Activity types"},
-				{id: "statuses", value: "Statuses"}
+				{id: "activityTypes", value: _("Activity types")},
+				{id: "statuses", value: _("Statuses")}
 			]
 		};
 
