@@ -5,6 +5,8 @@ import {activities} from "../../models/activities";
 
 export default class SaveForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			view: "window",
 			position: "center",
@@ -29,19 +31,24 @@ export default class SaveForm extends JetView {
 				elements: [
 					{
 						view: "textarea",
-						label: "Details",
+						label: _("Details"),
 						name: "Details",
 						height: 150
 					},
 					{
 						view: "richselect",
-						label: "Type",
+						label: _("Type"),
 						name: "TypeID",
-						options: activityTypes
+						options: {
+							body: {
+								template: "<span class='fas #Icon# style='width: 18px;'></span> #Value#",
+								data: activityTypes
+							}
+						}
 					},
 					{
 						view: "richselect",
-						label: "Contact",
+						label: _("Contact"),
 						name: "ContactID",
 						localId: "contact",
 						options: contacts
@@ -52,20 +59,20 @@ export default class SaveForm extends JetView {
 							{
 								view: "datepicker",
 								name: "DueDate",
-								label: "Date"
+								label: _("Date")
 							},
 							{
 								view: "datepicker",
 								name: "DueTime",
 								type: "time",
-								label: "Time"
+								label: _("Time")
 							}
 						]
 					},
 					{
 						view: "checkbox",
 						name: "State",
-						labelRight: "Completed",
+						labelRight: _("Completed"),
 						checkValue: "Close",
 						uncheckValue: "Open",
 						labelWidth: 0
@@ -82,7 +89,7 @@ export default class SaveForm extends JetView {
 							},
 							{
 								view: "button",
-								label: "Cancel",
+								label: _("Cancel"),
 								autoWidth: true,
 								click: () => this.closeWindow()
 							}
@@ -110,6 +117,7 @@ export default class SaveForm extends JetView {
 	}
 
 	showWindow(id, disable = false) {
+		const _ = this.app.getService("locale")._;
 		this.getRoot().show();
 		this.id = id;
 		webix.promise.all([
@@ -119,9 +127,9 @@ export default class SaveForm extends JetView {
 		]).then(() => {
 			const formView = this.$$("editForm");
 			const button = this.$$("onSave");
-			let mode = this.id ? "Edit" : "Add";
+			let mode = this.id ? _("Edit") : _("Add");
 			button.setValue(mode);
-			this.$$("headerWindow").setHTML(`${mode} activity`);
+			this.$$("headerWindow").setHTML(`${_(mode)} ${_("activity")}`);
 			if (this.id) formView.setValues(activities.getItem(this.id));
 			if (disable) this.$$("contact").disable();
 			else this.$$("contact").enable();

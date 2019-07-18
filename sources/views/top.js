@@ -2,6 +2,8 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		let menu = {
 			view: "menu",
 			id: "top:menu",
@@ -16,9 +18,9 @@ export default class TopView extends JetView {
 				}
 			},
 			data: [
-				{value: "Contacts", id: "contacts", icon: "fa-users"},
-				{value: "Activities", id: "activities", icon: "fa-calendar-alt"},
-				{value: "Settings", id: "settings", icon: "fa-cogs"}
+				{value: _("Contacts"), id: "contacts", icon: "fa-users"},
+				{value: _("Activities"), id: "activities", icon: "fa-calendar-alt"},
+				{value: _("Settings"), id: "settings", icon: "fa-cogs"}
 			]
 		};
 
@@ -26,7 +28,7 @@ export default class TopView extends JetView {
 			type: "clean",
 			css: "app_layout",
 			rows: [
-				{localId: "headerApp", type: "header", template: "Activaties", css: "webix_header webix_dark"},
+				{localId: "headerApp", type: "header", template: _("Activaties"), css: "webix_header webix_dark"},
 				{
 					cols: [
 						{

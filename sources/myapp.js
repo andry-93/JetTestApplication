@@ -1,4 +1,4 @@
-import {JetApp, EmptyRouter, HashRouter} from "webix-jet";
+import {JetApp, EmptyRouter, HashRouter, plugins} from "webix-jet";
 import "./styles/app.css";
 
 export default class MyApp extends JetApp {
@@ -16,5 +16,14 @@ export default class MyApp extends JetApp {
 }
 
 if (!BUILD_AS_MODULE) {
-	webix.ready(() => new MyApp().render());
+	webix.ready(() => {
+		const app = new MyApp();
+		app.use(plugins.Locale, {
+			webix: {
+				en: "en-US",
+				ru: "ru-RU"
+			}
+		});
+		app.render();
+	});
 }

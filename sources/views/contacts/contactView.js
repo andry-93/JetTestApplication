@@ -8,6 +8,8 @@ import FilesInfo from "./filesInfo";
 
 export default class Start extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		let Toolbar = {
 			view: "toolbar",
 			borderless: true,
@@ -31,7 +33,7 @@ export default class Start extends JetView {
 					autowidth: true,
 					type: "icon",
 					icon: "far fa-trash-alt",
-					label: "Delete",
+					label: _("Delete"),
 					click() {
 						this.$scope.deleteContact();
 					}
@@ -41,7 +43,7 @@ export default class Start extends JetView {
 					autowidth: true,
 					type: "icon",
 					icon: "far fa-edit",
-					label: "Edit",
+					label: _("Edit"),
 					click() {
 						this.$scope.getParentView().setParam("mode", "Edit");
 						this.$scope.show("contacts.edit");
@@ -94,8 +96,8 @@ export default class Start extends JetView {
 									localId: "contactTableTabBar",
 									multiview: true,
 									options: [
-										{id: "ActivitiesInfo", value: "Activities"},
-										{id: "FilesInfo", value: "Files"}
+										{id: "ActivitiesInfo", value: _("Activities")},
+										{id: "FilesInfo", value: _("Files")}
 									]
 								},
 								{
@@ -121,7 +123,11 @@ export default class Start extends JetView {
 			if (id && contacts.exists(id)) {
 				let contactItem = contacts.getItem(id);
 				this.$$("templateName").setValues({value: contactItem.value});
-				this.$$("templateImg").setValues({Photo: contactItem.Photo, Status: statuses.getItem(contactItem.StatusID).Value});
+				this.$$("templateImg").setValues({
+					Photo: contactItem.Photo,
+					Status: statuses.getItem(contactItem.StatusID).Value,
+					Icon: statuses.getItem(contactItem.StatusID).Icon
+				});
 				this.$$("templateInfo").setValues(contactItem);
 			}
 		});
@@ -130,9 +136,10 @@ export default class Start extends JetView {
 	selectedContactImg(obj) {
 		let photo = obj.Photo || "./sources/styles/img/nouser.jpg";
 		let status = obj.Status || "";
+		let icon = obj.Icon || "";
 		return `
 			<img src="${photo}" class="contact-info_photo" ondragstart="return false"/>
-			<div class="text-center">${status}</div>
+			<div class="text-center"><span class='fas ${icon}' style='width: 18px;'></span> ${status}</div>
 		`;
 	}
 
@@ -156,12 +163,13 @@ export default class Start extends JetView {
 	}
 
 	deleteContact() {
+		const _ = this.app.getService("locale")._;
 		const id = this.getParam("contactId", true);
 		const activitiList = activities.find(obj => obj.ContactID.toString() === id.toString());
 		const fileList = files.find(obj => obj.ContactID.toString() === id.toString());
 		webix.confirm({
-			title: "Delete",
-			text: "Are you sure?"
+			title: _("Delete"),
+			text: _("Are you sure?")
 		}).then(() => {
 			contacts.remove(id);
 			if (!this.isEmpty(activitiList)) {

@@ -6,6 +6,8 @@ import SaveForm from "../activities/savePopup";
 
 export default class ActivitiesInfo extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const contactTable = {
 			view: "datatable",
 			localId: "contactActivitiesTable",
@@ -25,18 +27,25 @@ export default class ActivitiesInfo extends JetView {
 				{
 					id: "TypeID",
 					header: {content: "selectFilter"},
+					minWidth: 100,
 					fillspace: true,
-					options: activityTypes
+					options: activityTypes,
+					template: (obj, common, val, config) => {
+						const item = config.collection.getItem(obj.TypeID);
+						return `<span class='fas ${item.Icon}' style='width: 18px;'></span> ${item.Value}`;
+					}
 				},
 				{
 					id: "DueDate",
 					header: {content: "dateRangeFilter"},
 					format: webix.i18n.longDateFormatStr,
+					minWidth: 150,
 					fillspace: true
 				},
 				{
 					id: "Details",
 					header: {content: "textFilter"},
+					minWidth: 150,
 					fillspace: true
 				},
 				{
@@ -69,9 +78,9 @@ export default class ActivitiesInfo extends JetView {
 							autowidth: true,
 							type: "icon",
 							css: "webix_primary",
-							label: "Add activity",
+							label: _("Add activity"),
 							icon: "fas fa-plus",
-							click: () => this.window.showWindow("", false)
+							click: () => this.window.showWindow()
 						}
 					]
 				}
@@ -96,9 +105,10 @@ export default class ActivitiesInfo extends JetView {
 	}
 
 	deleteColumn(_e, id) {
+		const _ = this.$scope.app.getService("locale")._;
 		webix.confirm({
-			title: "Delete",
-			text: "Are you sure?"
+			title: _("Delete"),
+			text: _("Are you sure?")
 		}).then(() => {
 			activities.remove(id);
 		});
