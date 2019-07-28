@@ -17,7 +17,7 @@ export default {
 	"Add activity": "Add activity",
 	Files: "Files",
 	"Are you sure?": "Are you sure?",
-	"Upload file": "Upload files",
+	"Upload files": "Upload files",
 	Name: "Name",
 	Size: "Size",
 	"Change date": "Change date",

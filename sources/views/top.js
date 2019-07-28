@@ -28,7 +28,7 @@ export default class TopView extends JetView {
 			type: "clean",
 			css: "app_layout",
 			rows: [
-				{localId: "headerApp", type: "header", template: _("Activaties"), css: "webix_header webix_dark"},
+				{localId: "headerApp", type: "header", template: _("Activities"), css: "webix_header webix_dark"},
 				{
 					cols: [
 						{

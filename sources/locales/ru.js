@@ -17,7 +17,7 @@ export default {
 	"Add activity": "Добавить активность",
 	Files: "Файлы",
 	"Are you sure?": "Вы уверены?",
-	"Upload file": "Загрузить файлы",
+	"Upload files": "Загрузить файлы",
 	Name: "Имя",
 	Size: "Размер",
 	"Change date": "Дата изменения",
