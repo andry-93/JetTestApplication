@@ -127,8 +127,8 @@ export default class SaveForm extends JetView {
 		]).then(() => {
 			const formView = this.$$("editForm");
 			const button = this.$$("onSave");
-			let mode = this.id ? _("Edit") : _("Add");
-			button.setValue(mode);
+			let mode = this.id ? "Edit" : "Add";
+			button.setValue(_(mode));
 			this.$$("headerWindow").setHTML(`${_(mode)} ${_("activity")}`);
 			if (this.id) formView.setValues(activities.getItem(this.id));
 			if (disable) this.$$("contact").disable();
